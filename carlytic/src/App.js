@@ -6,6 +6,7 @@ import ManagerHome from "./pages/ManagerHome";
 import CustomerPredictionPage from "./pages/CustomerPredictionPage";
 import { RequireAuth } from "./utils/RequireAuth";
 import "bootstrap/dist/css/bootstrap.min.css";
+import PredictCustomerSetPage from "./pages/PredictCustomerSetPage";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route path="predictcustomers" element={<PredictCustomerSetPage />} />
         </Routes>
       </BrowserRouter>
     </div>
