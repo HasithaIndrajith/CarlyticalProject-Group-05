@@ -4,21 +4,24 @@ import Col from "react-bootstrap/Col";
 import car from "../images/car.jpg";
 import { Form, Button } from "react-bootstrap";
 import { useState } from "react";
-import UserServices  from "../services/userServices" ;
+import UserServices from "../services/userServices";
+import { useNavigate, useLocation } from "react-router-dom";
 function Login() {
   const [LoginFormValue, setLoginFormValue] = useState({
     id: "",
-    password: "",         
+    password: "",
   });
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/navigation";
   async function handleLogin(e) {
     e.preventDefault();
     console.log(LoginFormValue);
 
-
     const response = await UserServices.handleLogin(LoginFormValue);
     console.log(response);
-    // localStorage.setItem("AccessToken", response?.data?.accessToken);
+    localStorage.setItem("AccessToken", response?.data?.accessToken);
+    navigate(from, { replace: true });
   }
 
   return (

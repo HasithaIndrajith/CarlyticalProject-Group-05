@@ -3,18 +3,21 @@ const predictcustomerset = (req, res) => {
     return res.status(400).josn({
       msg: "No file uploaded",
     });
-    const file = req.files.file;
-    file.mv(`${__dirname}/client/public/uploads/${file.name}`, (err) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send(err);
-      }
-      res.json({
-        fileName: file.name,
-        filePath: `/uploads/${file.name}`,
-      });
-    });
   }
+  const file = req.files.file;
+  console.log(`${__dirname}/client/${file.name}`);
+  file.mv(`${__dirname}/client/${file.name}`, (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send(err);
+    }
+    res.json({
+      fileName: file.name,
+      filePath: `/uploads/${file.name}`,
+    });
+  });
+
+  console.log(req);
 };
 
 module.exports = { predictcustomerset };

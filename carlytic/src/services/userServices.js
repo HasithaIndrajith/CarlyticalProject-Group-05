@@ -1,5 +1,5 @@
 import axios from "axios";
-const DNS = "http://localhost:8080";
+const DNS = "http://localhost:3001";
 
 const handleLogin = (LoginFormValue) => {
   console.log("Inside Handle Login");
