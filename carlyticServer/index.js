@@ -3,7 +3,7 @@ const cors = require("cors");
 const fileUpload = require("express-fileupload");
 require("dotenv").config();
 const app = express();
-
+const dotenv = require("dotenv");
 var corsOptions = {
   origin: "http://localhost:3000",
 };
@@ -18,6 +18,8 @@ const PORT = 3001;
 
 app.use("/api/auth", authRouter);
 app.use("/api/uploadfile", uploadFileRouter);
+
+dotenv.config();
 app.listen(PORT, (error) => {
   if (!error)
     console.log(

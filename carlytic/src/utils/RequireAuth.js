@@ -11,12 +11,11 @@ export const RequireAuth = ({ children }) => {
     user = null;
   }
 
-  // console.log
   // console.log(user);
   console.log("path", location);
   console.log("kfdsfd", location.pathname.split("/")[1]);
 
-  return user !== null && user.id !== undefined ? (
+  return user !== null && user.userInfo.id !== undefined ? (
     children
   ) : (
     <Navigate to="/" state={{ from: location.pathname }} replace />

@@ -52,7 +52,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `userID` varchar(30) NOT NULL,
   `email` varchar(30) DEFAULT NULL,
-  `password` varchar(30) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
   `logged_at` datetime DEFAULT NULL,
   `refresh_token` varchar(255) DEFAULT NULL,
   UNIQUE KEY `refresh_token_UNIQUE` (`refresh_token`),
@@ -67,7 +67,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('E001','hasitha.19@cse.mrt.ac.lk','12345',NULL,NULL);
+INSERT INTO `user` VALUES ('E001','hasitha.19@cse.mrt.ac.lk','$2a$04$eVtKkTCK7qJ4dlVzndMnX.kDDK0tFFz6CS.j1whZPrn/1wZQfz9IG',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
