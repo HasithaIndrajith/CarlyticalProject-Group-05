@@ -7,7 +7,10 @@ import CustomerPredictionPage from "./pages/CustomerPredictionPage";
 import { RequireAuth } from "./utils/RequireAuth";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PredictCustomerSetPage from "./pages/PredictCustomerSetPage";
-
+const ROLES = {
+  MANAGER: 1,
+  EMPLOYEE: 0,
+};
 function App() {
   return (
     <div className="App">
@@ -18,7 +21,7 @@ function App() {
           <Route
             path="employeehome"
             element={
-              <RequireAuth>
+              <RequireAuth allowedRoles={[ROLES.EMPLOYEE]}>
                 <EmployeeHome />
               </RequireAuth>
             }
@@ -26,7 +29,7 @@ function App() {
           <Route
             path="managerhome"
             element={
-              <RequireAuth>
+              <RequireAuth allowedRoles={[ROLES.MANAGER]}>
                 <ManagerHome />
               </RequireAuth>
             }
@@ -34,12 +37,19 @@ function App() {
           <Route
             path="predictcustomer"
             element={
-              <RequireAuth>
+              <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE]}>
                 <CustomerPredictionPage />
               </RequireAuth>
             }
           />
-          <Route path="predictcustomers" element={<PredictCustomerSetPage />} />
+          <Route
+            path="predictcustomers"
+            element={
+              <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE]}>
+                <PredictCustomerSetPage />
+              </RequireAuth>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>

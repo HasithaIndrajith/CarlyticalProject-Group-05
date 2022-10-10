@@ -2,7 +2,7 @@ import { Navigate, useLocation } from "react-router-dom";
 
 import jwtDecode from "jwt-decode";
 
-export const RequireAuth = ({ children }) => {
+export const RequireAuth = ({ children, allowedRoles }) => {
   const location = useLocation();
 
   try {
@@ -14,9 +14,11 @@ export const RequireAuth = ({ children }) => {
   // console.log(user);
   console.log("path", location);
   console.log("kfdsfd", location.pathname.split("/")[1]);
-
-  return user !== null && user.userInfo.id !== undefined ? (
+  console.log(user);
+  return allowedRoles?.find((role) => user?.userInfo?.role === role) ? (
     children
+  ) : user ? (
+    <Navigate to="/unauthorized" state={{ from: location.pathname }} replace />
   ) : (
     <Navigate to="/" state={{ from: location.pathname }} replace />
   );
