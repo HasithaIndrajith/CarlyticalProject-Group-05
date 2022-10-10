@@ -18,17 +18,17 @@ function App() {
           <Route
             path="employeehome"
             element={
-              <RequireAuth>
+              // <RequireAuth>
                 <EmployeeHome />
-              </RequireAuth>
+              // </RequireAuth>
             }
           />
           <Route
             path="managerhome"
             element={
-              <RequireAuth>
+              // <RequireAuth>
                 <ManagerHome />
-              </RequireAuth>
+              // </RequireAuth>
             }
           />
           <Route
