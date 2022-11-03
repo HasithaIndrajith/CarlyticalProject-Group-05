@@ -15,6 +15,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import userServices from "../services/userServices";
 import { useLocation, useNavigate } from "react-router-dom";
+import Alert from "react-bootstrap/Alert";
+import { useState, useEffect } from "react";
 
 function Copyright(props) {
   return (
@@ -40,6 +42,9 @@ export default function SignInSide() {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from;
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {}, [errorMessage]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -52,6 +57,7 @@ export default function SignInSide() {
     await userServices
       .handleLogin(userData)
       .then((response) => {
+        console.log(response);
         localStorage.setItem("AccessToken", response?.data?.accessToken);
         // console.log(response.data);
         if (response.data.result.type === 1) {
@@ -61,7 +67,12 @@ export default function SignInSide() {
         }
       })
       .catch((err) => {
-        navigate(from, { replace: true });
+        console.log(err.response.data);
+        if (err.response.data.password === false) {
+          setErrorMessage("Wrong Password Provided !!!");
+        } else if (err.response.data.password === undefined) {
+          setErrorMessage("No User Found !!!");
+        }
       });
   };
 
@@ -127,10 +138,7 @@ export default function SignInSide() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
+
               <Button
                 type="submit"
                 fullWidth
@@ -153,6 +161,11 @@ export default function SignInSide() {
                 </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />
+              {errorMessage !== "" ? (
+                <Alert key={"warning"} variant={"warning"}>
+                  {errorMessage}
+                </Alert>
+              ) : null}
             </Box>
           </Box>
         </Grid>

@@ -44,7 +44,7 @@ const signup = (userData) => {
         } else {
           if (result.length === 1) {
             const hash = bcrypt.hashSync(userData.password, 9);
-            console.log(userData.id, userData.email, hash);
+            // console.log(userData.id, userData.email, hash);
             db.query(
               "INSERT INTO USER (USERID,EMAIL,PASSWORD) VALUES ('" +
                 userData.id +
@@ -52,15 +52,16 @@ const signup = (userData) => {
                 userData.email +
                 "','" +
                 hash +
-                "')"
-            ),
+                "')",
               (err, result) => {
                 if (err) {
                   return reject(err);
                 } else {
-                  return resolve(result);
+                  console.log(result);
+                  return resolve(true);
                 }
-              };
+              }
+            );
           } else {
             return resolve("No user found!");
           }
@@ -131,10 +132,22 @@ const updateRefreshToken = (refreshToken, role) => {
     );
   });
 };
+const checkEmailExist = (id) => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT USERID FROM USER WHERE USERID=?", [id], (err, result) => {
+      if (err) {
+        return reject(err);
+      } else {
+        return resolve(result);
+      }
+    });
+  });
+};
 module.exports = {
   signin,
   updateRefreshTokenAndLoggedAt,
   signup,
   logout,
   checkTokenFromDatabase,
+  checkEmailExist,
 };
