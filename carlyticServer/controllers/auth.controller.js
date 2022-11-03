@@ -12,6 +12,7 @@ const signin = async (req, res) => {
   try {
     var result;
     result = await authModel.signin(userData);
+    // console.log(result);
   } catch (error) {
     console.log("ERROR WHILE GETTING USER BY MEMBERID : " + error);
     return res.status(500).json({ err: error });
@@ -19,7 +20,7 @@ const signin = async (req, res) => {
 
   if (result?.length > 0) {
     let role = 0;
-    console.log(result);
+
     if (result[0].type === 1) {
       role = 1;
       // console.log("I am hereee");
@@ -29,6 +30,7 @@ const signin = async (req, res) => {
       if (err) {
         res.status(401).json({ auth: false });
       }
+
       if (response) {
         const accessToken = jwt.sign(
           {
@@ -72,27 +74,61 @@ const signin = async (req, res) => {
         //   maxAge: 24 * 60 * 60 * 1000,
         // });
         res.send({ auth: true, accessToken: accessToken, result: result[0] });
+      } else {
+        console.log("Wrong password provided!!!");
+        return res.status(401).json({
+          auth: false,
+          message: "Please provide the correct password!!!",
+          password: false,
+        });
       }
     });
   } else {
-    res.status(401).json({ auth: false });
+    console.log("No user found");
+    return res.status(401).json({ auth: false, message: "No user found!!!" });
   }
 };
 
 const signup = async (req, res) => {
   const userData = req.body;
+  if (
+    !userData.id ||
+    !userData.email ||
+    !userData.password ||
+    !userData.confirmpassword
+  ) {
+    return res.sendStatus(400); //bad request
+  }
   await authModel
-    .signup(userData)
-    .then((result) => {
-      console.log("Registered successfully!");
-      res.json({
-        success: true,
-        result,
-      });
+    .checkEmailExist(userData.id)
+    .then(async (result) => {
+      if (result.length > 0) {
+        return res.status(200).json({
+          success: false,
+          message: "User already registered",
+          alreadyRegistered: true,
+        });
+      }
+      await authModel
+        .signup(userData)
+        .then((result) => {
+          console.log(result);
+          console.log("Registered successfully!");
+          return res.status(201).json({
+            success: true,
+            message: "User registered successfully",
+          });
+        })
+        .catch((err) => {
+          console.log("ERROR WHEN REGISTERING: " + err);
+          return res.status(500).json({
+            success: false,
+            err,
+          });
+        });
     })
     .catch((err) => {
-      console.log("ERROR WHEN REGISTERING: " + err);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         err,
       });
@@ -159,4 +195,4 @@ const refreshTokenHandler = async (req, res) => {
       return res.status(403).json({ message: "Invalid token" });
     });
 };
-module.exports = {  signin, signup, logout, refreshTokenHandler };
+module.exports = { signin, signup, logout, refreshTokenHandler };

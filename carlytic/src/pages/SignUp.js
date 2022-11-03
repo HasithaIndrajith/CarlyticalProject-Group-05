@@ -15,6 +15,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import userServices from "../services/userServices";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Alert } from "react-bootstrap";
 
 function Copyright(props) {
   return (
@@ -40,7 +42,75 @@ export default function SignUp() {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from || "/navigation";
+  const [errorMessage, setErrorMessage] = useState("");
+  const [formError, setFormError] = useState({
+    id: "Please enter your ID",
+    email: "Plase Enter valid email",
+    password: "(A-Z) (a-z) (0-9) (@#$% ...) (minimum length 8))",
+    confirmpassword: "(A-Z) (a-z) (0-9) (@#$% ...) (minimum length 8))",
+  });
+  const [hasErrorObj, setHasErrorObject] = useState({
+    id: true,
+    email: true,
+    password: true,
+    confirmpassword: true,
+  });
+  useEffect(() => {}, [errorMessage]);
 
+  const changeID = (e) => {
+    if (e.target.value.length > 0) {
+      setFormError({ ...formError, id: "" });
+      setHasErrorObject({ ...hasErrorObj, id: false });
+    } else {
+      setFormError({ ...formError, id: "Please enter your ID" });
+      setHasErrorObject({ ...hasErrorObj, id: true });
+    }
+  };
+  const changeEmail = (e) => {
+    if (
+      new RegExp(
+        "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$"
+      ).test(e.target.value)
+    ) {
+      setFormError({ ...formError, email: "" });
+      setHasErrorObject({ ...hasErrorObj, email: false });
+    } else {
+      setFormError({ ...formError, email: "Plase Enter valid email" });
+      setHasErrorObject({ ...hasErrorObj, email: true });
+    }
+  };
+  const changePassword = (e) => {
+    if (
+      new RegExp(
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+      ).test(e.target.value)
+    ) {
+      setFormError({ ...formError, password: "" });
+      setHasErrorObject({ ...hasErrorObj, password: false });
+    } else {
+      setFormError({
+        ...formError,
+        password: "(A-Z) (a-z) (0-9) (@#$% ...) (minimum length 8))",
+      });
+      setHasErrorObject({ ...hasErrorObj, password: true });
+    }
+  };
+  const changeConfirmPassword = (e) => {
+    if (
+      new RegExp(
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+      ).test(e.target.value)
+    ) {
+      setFormError({ ...formError, confirmpassword: "" });
+      setHasErrorObject({ ...hasErrorObj, confirmpassword: false });
+    } else {
+      setFormError({
+        ...formError,
+        confirmpassword: "(A-Z) (a-z) (0-9) (@#$% ...) (minimum length 8))",
+      });
+      setHasErrorObject({ ...hasErrorObj, confirmpassword: true });
+    }
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -50,14 +120,20 @@ export default function SignUp() {
       password: data.get("password"),
       confirmpassword: data.get("confirmpassword"),
     };
-
-    const response = await userServices.handleSignUp(userData);
-    console.log(response);
-    // localStorage.setItem("AccessToken", response?.data?.accessToken);
-    // navigate(from, { replace: true });
-    if (response.status === 201) {
-      navigate("/");
-    }
+    
+    await userServices
+      .handleSignUp(userData)
+      .then((result) => {
+        if (result.status === 201) {
+          navigate("/");
+        }
+        if (result.data.alreadyRegistered === true) {
+          setErrorMessage("User already registered with the system !!!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -106,41 +182,53 @@ export default function SignUp() {
                 margin="normal"
                 required
                 fullWidth
+                error={hasErrorObj.id}
                 id="userID"
                 label="User ID"
                 name="userID"
                 autoComplete="userID"
                 autoFocus
+                onChange={changeID}
+                helperText={formError.id}
               />
               <TextField
                 margin="normal"
                 required
+                error={hasErrorObj.email}
                 fullWidth
                 id="email"
                 label="Email"
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={changeEmail}
+                helperText={formError.email}
               />
               <TextField
                 margin="normal"
                 required
+                error={hasErrorObj.password}
                 fullWidth
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={changePassword}
+                helperText={formError.password}
               />
               <TextField
                 margin="normal"
                 required
+                error={hasErrorObj.confirmpassword}
                 fullWidth
                 name="confirmpassword"
                 label="Confirm Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={changeConfirmPassword}
+                helperText={formError.confirmpassword}
               />
 
               <Button
@@ -161,6 +249,11 @@ export default function SignUp() {
                 </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />
+              {errorMessage !== "" ? (
+                <Alert key={"warning"} variant={"warning"}>
+                  {errorMessage}
+                </Alert>
+              ) : null}
             </Box>
           </Box>
         </Grid>
