@@ -159,4 +159,4 @@ const refreshTokenHandler = async (req, res) => {
       return res.status(403).json({ message: "Invalid token" });
     });
 };
-module.exports = { signin, signup, logout, refreshTokenHandler };
+module.exports = {  signin, signup, logout, refreshTokenHandler };
