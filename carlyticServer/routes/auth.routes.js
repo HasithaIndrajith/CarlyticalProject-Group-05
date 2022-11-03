@@ -9,5 +9,9 @@ router.post("/", function (req, res) {
   res.send("POST route on things.");
 });
 
-router.post("/signin",controller.signin)
+router.post("/signin", controller.signin);
+router.get("/logout", controller.logout);
+router.post("/signup", controller.signup);
+router.get("/refresh", controller.refreshTokenHandler);
+
 module.exports = router;

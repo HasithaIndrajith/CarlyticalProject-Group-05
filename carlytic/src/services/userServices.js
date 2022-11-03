@@ -13,6 +13,32 @@ const handleLogin = (LoginFormValue) => {
     data: LoginFormValue,
   });
 };
+const handleSignUp = (SignUpFormValue) => {
+  console.log("Inside Handle SignUp");
+  return axios({
+    url: DNS + "/api/auth/signup",
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    data: SignUpFormValue,
+  });
+};
+
+const handleLogout = () => {
+  console.log("Inside Handle Logout");
+  return axios({
+    url: DNS + "/api/auth/logout",
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+  });
+};
 export default {
   handleLogin,
+  handleSignUp,
+  handleLogout,
 };

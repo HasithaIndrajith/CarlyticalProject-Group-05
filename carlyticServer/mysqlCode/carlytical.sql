@@ -57,6 +57,7 @@ CREATE TABLE `user` (
   `refresh_token` varchar(255) DEFAULT NULL,
   UNIQUE KEY `refresh_token_UNIQUE` (`refresh_token`),
   KEY `userID_ibfk_1` (`userID`),
+  UNIQUE  (`userID`),
   CONSTRAINT `userID_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `member` (`memberID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

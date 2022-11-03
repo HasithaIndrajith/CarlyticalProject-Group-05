@@ -7,6 +7,7 @@ import CustomerPredictionPage from "./pages/CustomerPredictionPage";
 import { RequireAuth } from "./utils/RequireAuth";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PredictCustomerSetPage from "./pages/PredictCustomerSetPage";
+import SignInSide from "./pages/LoginMUI";
 const ROLES = {
   MANAGER: 1,
   EMPLOYEE: 0,
@@ -16,7 +17,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route index element={<Login />} />
+          <Route index element={<SignInSide />} />
           <Route path="signup" element={<SignUp />} />
           <Route
             path="employeehome"
