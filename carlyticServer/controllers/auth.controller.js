@@ -43,9 +43,10 @@ const signin = async (req, res) => {
         );
 
         const refreshToken = jwt.sign(
-          { id ,
-          role: role, // 1 for manager
-          email: result[0].email,
+          {
+            id,
+            role: role, // 1 for manager
+            email: result[0].email,
           },
           process.env.REFRESH_TOKEN_SECRET,
           {
@@ -136,7 +137,7 @@ const refreshTokenHandler = async (req, res) => {
                 userInfo: {
                   id: decode.id,
                   role: decode.role,
-                  email:decode.email
+                  email: decode.email,
                 },
               },
               process.env.ACCESS_TOKEN_SECRET,
@@ -150,9 +151,8 @@ const refreshTokenHandler = async (req, res) => {
             });
           }
         );
-      }
-      else{
-        throw
+      } else {
+        throw new Error("No user Found");
       }
     })
     .catch((err) => {
