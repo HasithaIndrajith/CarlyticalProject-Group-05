@@ -3,14 +3,14 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import TimeToLeaveIcon from "@mui/icons-material/TimeToLeave";
+// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import userServices from "../services/userServices";
@@ -36,28 +36,33 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SignInSide() {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from || "/navigation";
+  const from = location.state?.from;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userData = {
       id: data.get("userID"),
-      email: data.get("email"),
       password: data.get("password"),
-      confirmpassword: data.get("confirmpassword"),
     };
 
-    const response = await userServices.handleSignUp(userData);
-    console.log(response);
-    // localStorage.setItem("AccessToken", response?.data?.accessToken);
-    // navigate(from, { replace: true });
-    if (response.status === 201) {
-      navigate("/");
-    }
+    await userServices
+      .handleLogin(userData)
+      .then((response) => {
+        localStorage.setItem("AccessToken", response?.data?.accessToken);
+        // console.log(response.data);
+        if (response.data.result.type === 1) {
+          navigate("/managerhome", { replace: true });
+        } else if (response.data.result.type === 0) {
+          navigate("/employeehome", { replace: true });
+        }
+      })
+      .catch((err) => {
+        navigate(from, { replace: true });
+      });
   };
 
   return (
@@ -94,7 +99,7 @@ export default function SignUp() {
               <TimeToLeaveIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Register
+              Sign in
             </Typography>
             <Box
               component="form"
@@ -116,33 +121,16 @@ export default function SignUp() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email"
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
               />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="confirmpassword"
-                label="Confirm Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
               />
-
               <Button
                 type="submit"
                 fullWidth
@@ -150,13 +138,17 @@ export default function SignUp() {
                 sx={{ mt: 3, mb: 2 }}
                 style={{ backgroundColor: "black" }}
               >
-                Register
+                Sign In
               </Button>
               <Grid container>
-                <Grid item xs></Grid>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
                 <Grid item>
-                  <Link href="/" variant="body2">
-                    {"Already have an account? Log In"}
+                  <Link href="/signup" variant="body2">
+                    {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
               </Grid>

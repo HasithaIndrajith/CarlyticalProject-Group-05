@@ -1,5 +1,5 @@
 const db = require("../db/db");
-
+const bcrypt = require("bcrypt");
 const signin = (userData) => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -31,4 +31,110 @@ const updateRefreshTokenAndLoggedAt = (refreshToken, id) => {
     );
   });
 };
-module.exports = { signin, updateRefreshTokenAndLoggedAt };
+
+const signup = (userData) => {
+  return new Promise((resolve, reject) => {
+    console.log(userData);
+    db.query(
+      "SELECT * FROM MEMBER WHERE MEMBERID=?",
+      userData.id,
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        } else {
+          if (result.length === 1) {
+            const hash = bcrypt.hashSync(userData.password, 9);
+            console.log(userData.id, userData.email, hash);
+            db.query(
+              "INSERT INTO USER (USERID,EMAIL,PASSWORD) VALUES ('" +
+                userData.id +
+                "','" +
+                userData.email +
+                "','" +
+                hash +
+                "')"
+            ),
+              (err, result) => {
+                if (err) {
+                  return reject(err);
+                } else {
+                  return resolve(result);
+                }
+              };
+          } else {
+            return resolve("No user found!");
+          }
+        }
+      }
+    );
+    // db.query(
+    //   "SELECT * FROM member inner join user on user.userID=member.memberID where memberID=?",
+    //   userData.id,
+    //   (err, result) => {
+    //     if (err) {
+    //       return reject(err);
+    //     } else {
+    //       return resolve(result);
+    //     }
+    //   }
+    // );
+  });
+};
+
+const logout = async (req, res) => {
+  if (!cookies?.jwt) return res.sendStatus(204); //no content to send
+  const refreshToken = cookies.jwt;
+
+  // chech whether refreshZToken in the database
+
+  const auth = await checkTokenFromDatabase(refreshToken);
+  if (!auth) {
+    return res.status(404).json({ message: `User does not exist...` });
+  }
+  //if there is a record then set refreshToken to '';
+  const result = await updateRefreshToken(refreshToken);
+
+  console.log(result);
+
+  res.clearCookie("jwt", { httpOnly: true }); // for https we need to pass secure: true
+  res.sendStatus(204);
+};
+
+const checkTokenFromDatabase = (refreshToken) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "Select userID from USER where refresh_token=?",
+      [refreshToken],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        } else {
+          return resolve(result);
+        }
+      }
+    );
+  });
+};
+
+const updateRefreshToken = (refreshToken, role) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "Update USER set refresh_token=? where refresh_token=?",
+      [null, refreshToken],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        } else {
+          return resolve(result);
+        }
+      }
+    );
+  });
+};
+module.exports = {
+  signin,
+  updateRefreshTokenAndLoggedAt,
+  signup,
+  logout,
+  checkTokenFromDatabase,
+};
