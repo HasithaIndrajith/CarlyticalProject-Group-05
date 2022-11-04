@@ -44,7 +44,7 @@ const signup = (userData) => {
         } else {
           if (result.length === 1) {
             const hash = bcrypt.hashSync(userData.password, 9);
-            // console.log(userData.id, userData.email, hash);
+            console.log(userData.id, userData.email, hash);
             db.query(
               "INSERT INTO USER (USERID,EMAIL,PASSWORD) VALUES ('" +
                 userData.id +
@@ -63,7 +63,8 @@ const signup = (userData) => {
               }
             );
           } else {
-            return resolve("No user found!");
+            
+            return resolve({ isMember: false });
           }
         }
       }
@@ -132,7 +133,7 @@ const updateRefreshToken = (refreshToken, role) => {
     );
   });
 };
-const checkEmailExist = (id) => {
+const checkIDExists = (id) => {
   return new Promise((resolve, reject) => {
     db.query("SELECT USERID FROM USER WHERE USERID=?", [id], (err, result) => {
       if (err) {
@@ -149,5 +150,5 @@ module.exports = {
   signup,
   logout,
   checkTokenFromDatabase,
-  checkEmailExist,
+  checkIDExists,
 };
