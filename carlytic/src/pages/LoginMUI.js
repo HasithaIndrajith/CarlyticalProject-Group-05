@@ -43,8 +43,37 @@ export default function SignInSide() {
   const location = useLocation();
   const from = location.state?.from;
   const [errorMessage, setErrorMessage] = useState("");
+  const [hasErrorObj, setHasErrorObject] = useState({
+    id: true,
+    password: true,
+  });
+  const [formError, setFormError] = useState({
+    id: "Please enter your ID",
+    password: "Please enter your password",
+  });
 
   useEffect(() => {}, [errorMessage]);
+
+  const changeID = (e) => {
+    setErrorMessage("");
+    if (e.target.value.length > 0) {
+      setFormError({ ...formError, id: "" });
+      setHasErrorObject({ ...hasErrorObj, id: false });
+    } else {
+      setFormError({ ...formError, id: "Please enter your ID" });
+      setHasErrorObject({ ...hasErrorObj, id: true });
+    }
+  };
+  const changePassword = (e) => {
+    setErrorMessage("");
+    if (e.target.value.length > 0) {
+      setFormError({ ...formError, password: "" });
+      setHasErrorObject({ ...hasErrorObj, password: false });
+    } else {
+      setFormError({ ...formError, password: "Please enter your password" });
+      setHasErrorObject({ ...hasErrorObj, password: true });
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -53,27 +82,28 @@ export default function SignInSide() {
       id: data.get("userID"),
       password: data.get("password"),
     };
-
-    await userServices
-      .handleLogin(userData)
-      .then((response) => {
-        console.log(response);
-        localStorage.setItem("AccessToken", response?.data?.accessToken);
-        // console.log(response.data);
-        if (response.data.result.type === 1) {
-          navigate("/managerhome", { replace: true });
-        } else if (response.data.result.type === 0) {
-          navigate("/employeehome", { replace: true });
-        }
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-        if (err.response.data.password === false) {
-          setErrorMessage("Wrong Password Provided !!!");
-        } else if (err.response.data.password === undefined) {
-          setErrorMessage("No User Found !!!");
-        }
-      });
+    if (!hasErrorObj.id && !hasErrorObj.password) {
+      await userServices
+        .handleLogin(userData)
+        .then((response) => {
+          console.log(response);
+          localStorage.setItem("AccessToken", response?.data?.accessToken);
+          // console.log(response.data);
+          if (response.data.result.type === 1) {
+            navigate("/managerhome", { replace: true });
+          } else if (response.data.result.type === 0) {
+            navigate("/employeehome", { replace: true });
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          if (err.response.data.password === false) {
+            setErrorMessage("Wrong Password Provided !!!");
+          } else if (err.response.data.password === undefined) {
+            setErrorMessage("No User Found !!!");
+          }
+        });
+    }
   };
 
   return (
@@ -127,6 +157,9 @@ export default function SignInSide() {
                 name="userID"
                 autoComplete="userID"
                 autoFocus
+                error={hasErrorObj.id}
+                onChange={changeID}
+                helperText={formError.id}
               />
               <TextField
                 margin="normal"
@@ -137,6 +170,9 @@ export default function SignInSide() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                error={hasErrorObj.password}
+                onChange={changePassword}
+                helperText={formError.password}
               />
 
               <Button

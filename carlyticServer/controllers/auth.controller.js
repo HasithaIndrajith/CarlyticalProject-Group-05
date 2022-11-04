@@ -100,8 +100,10 @@ const signup = async (req, res) => {
     return res.sendStatus(400); //bad request
   }
   await authModel
-    .checkEmailExist(userData.id)
+    .checkIDExists(userData.id)
     .then(async (result) => {
+      console.log("===================here");
+      console.log(result);
       if (result.length > 0) {
         return res.status(200).json({
           success: false,
@@ -113,11 +115,22 @@ const signup = async (req, res) => {
         .signup(userData)
         .then((result) => {
           console.log(result);
-          console.log("Registered successfully!");
-          return res.status(201).json({
-            success: true,
-            message: "User registered successfully",
-          });
+          console.log(!result.isMember);
+          if (result == true) {
+            console.log("Registered successfully!");
+            return res.status(201).json({
+              success: true,
+              message: "User registered successfully",
+            });
+          }
+
+          if (!result.isMember) {
+            return res.status(404).json({
+              success: false,
+              message: "No member Exists",
+              isMember: false,
+            });
+          }
         })
         .catch((err) => {
           console.log("ERROR WHEN REGISTERING: " + err);

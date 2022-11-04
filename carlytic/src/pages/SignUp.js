@@ -55,9 +55,10 @@ export default function SignUp() {
     password: true,
     confirmpassword: true,
   });
-  useEffect(() => {}, [errorMessage]);
+  // useEffect(() => {}, [errorMessage]);
 
   const changeID = (e) => {
+    setErrorMessage("");
     if (e.target.value.length > 0) {
       setFormError({ ...formError, id: "" });
       setHasErrorObject({ ...hasErrorObj, id: false });
@@ -67,6 +68,7 @@ export default function SignUp() {
     }
   };
   const changeEmail = (e) => {
+    setErrorMessage("");
     if (
       new RegExp(
         "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$"
@@ -80,6 +82,7 @@ export default function SignUp() {
     }
   };
   const changePassword = (e) => {
+    setErrorMessage("");
     if (
       new RegExp(
         "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
@@ -96,6 +99,7 @@ export default function SignUp() {
     }
   };
   const changeConfirmPassword = (e) => {
+    setErrorMessage("");
     if (
       new RegExp(
         "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
@@ -120,20 +124,39 @@ export default function SignUp() {
       password: data.get("password"),
       confirmpassword: data.get("confirmpassword"),
     };
-    
-    await userServices
-      .handleSignUp(userData)
-      .then((result) => {
-        if (result.status === 201) {
-          navigate("/");
-        }
-        if (result.data.alreadyRegistered === true) {
-          setErrorMessage("User already registered with the system !!!");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (
+      hasErrorObj.id ||
+      hasErrorObj.email ||
+      hasErrorObj.password ||
+      hasErrorObj.confirmpassword
+    ) {
+      setErrorMessage("Please fill the fields in correct format");
+    } else if (userData.password !== userData.confirmpassword) {
+      setErrorMessage("Password do not match");
+    } else if (
+      !hasErrorObj.id &&
+      !hasErrorObj.email &&
+      !hasErrorObj.password &&
+      !hasErrorObj.confirmpassword &&
+      errorMessage === ""
+    ) {
+      await userServices
+        .handleSignUp(userData)
+        .then((result) => {
+          if (result.status === 201) {
+            navigate("/");
+          }
+          if (result.data.alreadyRegistered === true) {
+            setErrorMessage("User already registered with the system !!!");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.data.isMember === false) {
+            setErrorMessage("No Member Found in organization !!!");
+          }
+        });
+    }
   };
 
   return (
