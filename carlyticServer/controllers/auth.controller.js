@@ -4,7 +4,7 @@ const authModel = require("../models/authModel");
 const jwt = require("jsonwebtoken");
 const signin = async (req, res) => {
   const userData = req.body;
-  // console.log(userData);
+  console.log(userData);
   const id = userData.id;
   const password = userData.password;
   if (!id || !password) return res.sendStatus(400); //bad request
@@ -68,11 +68,13 @@ const signin = async (req, res) => {
         } catch (err) {
           res.status(500).json({ err: err });
         }
-        // console.log(role);
-        // res.cookie("jwt", refreshToken, {
-        //   httpOnly: true,
-        //   maxAge: 24 * 60 * 60 * 1000,
-        // });
+
+        res.cookie("jwt", `${refreshToken}`, {
+          maxAge: 24 * 60 * 60 * 1000,
+          httpOnly: true,
+          // sameSite: "None",
+          // secure: true,
+        });
         res.send({ auth: true, accessToken: accessToken, result: result[0] });
       } else {
         console.log("Wrong password provided!!!");
@@ -151,12 +153,11 @@ const signup = async (req, res) => {
 const logout = async (req, res) => {
   const cookies = req.cookies;
   await authModel
-    .logout(cookies)
+    .logout(cookies,req,res)
     .then((result) => {
       console.log("Logout successfully!");
-      res.json({
-        success: true,
-        result,
+      res.clearCookie("jwt").status(200).json({
+        message: "Successfully logged out",
       });
     })
     .catch((err) => {
@@ -169,9 +170,10 @@ const logout = async (req, res) => {
 };
 const refreshTokenHandler = async (req, res) => {
   const cookies = req.cookies;
-
-  if (!cookies?.jwt) return res.sendStatus(401);
-  const refreshToken = cookies.jwt;
+  console.log("=======");
+  if (!req.cookies?.jwt) return res.sendStatus(401);
+  const refreshToken = req.cookies.jwt;
+  console.log(refreshToken);
   await authModel
     .checkTokenFromDatabase(refreshToken)
     .then((auth) => {

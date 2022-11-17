@@ -63,7 +63,6 @@ const signup = (userData) => {
               }
             );
           } else {
-            
             return resolve({ isMember: false });
           }
         }
@@ -83,7 +82,7 @@ const signup = (userData) => {
   });
 };
 
-const logout = async (req, res) => {
+const logout = async (cookies, req, res) => {
   if (!cookies?.jwt) return res.sendStatus(204); //no content to send
   const refreshToken = cookies.jwt;
 
@@ -99,7 +98,9 @@ const logout = async (req, res) => {
   console.log(result);
 
   res.clearCookie("jwt", { httpOnly: true }); // for https we need to pass secure: true
-  res.sendStatus(204);
+  res.status(200).json({
+    message: "Successfully logged out",
+  });
 };
 
 const checkTokenFromDatabase = (refreshToken) => {
