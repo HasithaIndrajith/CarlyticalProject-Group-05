@@ -1,12 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
+const cookieparser = require("cookie-parser");
+const bodyParser = require("body-parser");
+
 require("dotenv").config();
 const app = express();
 const dotenv = require("dotenv");
 var corsOptions = {
   origin: "http://localhost:3000",
 };
+app.use(cookieparser());
 app.use(cors(corsOptions));
 app.use(fileUpload());
 app.use(express.json());
@@ -18,7 +22,6 @@ const PORT = 3001;
 
 app.use("/api/auth", authRouter);
 app.use("/api/uploadfile", uploadFileRouter);
-
 
 dotenv.config();
 app.listen(PORT, (error) => {
