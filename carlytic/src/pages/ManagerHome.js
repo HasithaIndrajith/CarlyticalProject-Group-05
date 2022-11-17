@@ -13,7 +13,7 @@ const ManagerHome = () => {
       <div>
         <br></br>
         <br></br>
-        <button
+        {/* <button
           onClick={async (e) => {
             const response = await axios.get(
               "http://localhost:3001/api/auth/refresh"
@@ -22,7 +22,7 @@ const ManagerHome = () => {
           }}
         >
           Click me to get ur cookie
-        </button>
+        </button> */}
         <Container>
           <div className="row">
             <div className="col-md-4 container">
