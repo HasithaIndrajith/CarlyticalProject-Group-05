@@ -1,6 +1,6 @@
 const predictcustomerset = (req, res) => {
   if (req.files === null) {
-    return res.status(400).josn({
+    return res.status(400).send({
       msg: "No file uploaded",
     });
   }
