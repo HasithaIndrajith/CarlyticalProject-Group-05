@@ -37,13 +37,13 @@ const ManagerHome = () => {
                   <br></br>
 
                   <div className="text-center">
-                    <Button variant="primary" href="/home">
+                    <Button variant="primary" href="/dashboard">
                       View Dashboard
                     </Button>
                   </div>
                 </Card.Body>
               </Card>
-            </div>
+            </div>  
 
             <div className="col-md-4 container">
               <Card className="shadow">
@@ -67,17 +67,17 @@ const ManagerHome = () => {
 
             <div className="col-md-4 container">
               <Card className="shadow">
-                <Card.Img variant="top" src="DataSet.jpg" />
+                <Card.Img variant="top" src="Dataset1.jpg" />
                 <Card.Body>
                   <Card.Title>Predict for a Set of Customers</Card.Title>
                   <Card.Text>
-                    Input a dataset and get a prediction on whether customers
+                    Input a set of and get a prediction on whether they
                     will purchase car insurance.
                   </Card.Text>
                   <br></br>
 
                   <div className="text-center">
-                    <Button variant="primary" href="/leaveApplication">
+                    <Button variant="primary" href="/predictcustomers">
                       Predict for Dataset
                     </Button>
                   </div>
@@ -87,6 +87,7 @@ const ManagerHome = () => {
           </div>
         </Container>
       </div>
+      <br></br>
 
       <Footer />
     </>

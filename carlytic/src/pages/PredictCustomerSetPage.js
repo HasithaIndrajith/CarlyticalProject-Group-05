@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { Fragment, useState } from "react";
 import "./predictcustomersetpage.css";
 import ProgressBar from "react-bootstrap/ProgressBar";
+import Header from "./Header";
+import Footer from "./Footer";
 
 function ProgressBarFunction(props) {
   const now = props.percentage;
@@ -48,6 +50,8 @@ function PredictCustomerSetPage() {
   };
 
   return (
+    <div>
+      <Header/>
     <div
       className="containPage"
       style={{ backgroundImage: "url(/motor.jpeg)" }}
@@ -93,7 +97,7 @@ function PredictCustomerSetPage() {
                       // style={{ marginLeft: "50px" }}
                       disabled={!isClickable}
                     >
-                      Upload files
+                      Predict for dataset
                     </button>
                   </div>
                 </form>
@@ -165,6 +169,8 @@ function PredictCustomerSetPage() {
         </div>
         <script src="./uploadPage.js"></script>
       </Fragment>
+    </div>
+    <Footer/>
     </div>
   );
 }

@@ -26,7 +26,7 @@ const Header = () => {
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="/managerhome">
             <img
               alt=""
               src="/logo.png"
@@ -59,7 +59,7 @@ const Header = () => {
           Are you sure you want to Logout?
           <br></br>
           <br></br>
-          <Button className="btn-primary" onClick={handleLogout}>
+          <Button className="btn-primary" onClick={handleLogout} href="/">
             Confirm
           </Button>
           <Button className="btn-secondary" onClick={toggleLogoutModal}>

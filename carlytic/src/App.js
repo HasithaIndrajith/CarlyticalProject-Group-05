@@ -8,6 +8,7 @@ import { RequireAuth } from "./utils/RequireAuth";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PredictCustomerSetPage from "./pages/PredictCustomerSetPage";
 import SignInSide from "./pages/LoginMUI";
+import Dashboard from "./pages/Dashboard";
 const ROLES = {
   MANAGER: 1,
   EMPLOYEE: 0,
@@ -48,6 +49,14 @@ function App() {
             element={
               <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE]}>
                 <PredictCustomerSetPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="dashboard"
+            element={
+              <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE]}>
+                <Dashboard/>
               </RequireAuth>
             }
           />
