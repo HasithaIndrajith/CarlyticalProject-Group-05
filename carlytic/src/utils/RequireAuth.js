@@ -12,11 +12,8 @@ export const RequireAuth = ({ children, allowedRoles }) => {
   }
 
   console.log(user);
-  // console.log("path", location);
-  // console.log("kfdsfd", location.pathname.split("/")[1]);
+
   console.log("Inside Required auth");
-  // console.log(children);
-  // console.log(allowedRoles[0])
 
   return allowedRoles?.find((role) => user?.userInfo?.role == role) ? (
     children

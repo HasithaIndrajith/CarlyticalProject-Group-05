@@ -1,5 +1,18 @@
 const db = require("../db/db");
 const bcrypt = require("bcrypt");
+const Joi = require("joi");
+
+const PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+const EMAIL_REGEX =
+  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/;
+const signUpSchema = Joi.object({
+  id: Joi.string().required(),
+  password: Joi.string().pattern(PASSWORD_REGEX).required(),
+  confirmpassword: Joi.ref("password"),
+  email: Joi.string().email().pattern(EMAIL_REGEX).required(),
+});
+
 const signin = (userData) => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -34,7 +47,13 @@ const updateRefreshTokenAndLoggedAt = (refreshToken, id) => {
 
 const signup = (userData) => {
   return new Promise((resolve, reject) => {
-    console.log(userData);
+    // console.log(userData);
+
+    const { error, value } = signUpSchema.validate(userData);
+    if (error) {
+      return reject(error);
+    }
+
     db.query(
       "SELECT * FROM MEMBER WHERE MEMBERID=?",
       userData.id,
@@ -44,7 +63,7 @@ const signup = (userData) => {
         } else {
           if (result.length === 1) {
             const hash = bcrypt.hashSync(userData.password, 9);
-            console.log(userData.id, userData.email, hash);
+            // console.log(userData.id, userData.email, hash);
             db.query(
               "INSERT INTO USER (USERID,EMAIL,PASSWORD) VALUES ('" +
                 userData.id +
@@ -57,7 +76,7 @@ const signup = (userData) => {
                 if (err) {
                   return reject(err);
                 } else {
-                  console.log(result);
+                  // console.log(result);
                   return resolve(true);
                 }
               }
@@ -68,17 +87,6 @@ const signup = (userData) => {
         }
       }
     );
-    // db.query(
-    //   "SELECT * FROM member inner join user on user.userID=member.memberID where memberID=?",
-    //   userData.id,
-    //   (err, result) => {
-    //     if (err) {
-    //       return reject(err);
-    //     } else {
-    //       return resolve(result);
-    //     }
-    //   }
-    // );
   });
 };
 

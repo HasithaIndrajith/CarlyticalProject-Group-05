@@ -1,7 +1,20 @@
 const bcrypt = require("bcrypt");
+const Joi = require("joi");
 
 const authModel = require("../models/authModel");
 const jwt = require("jsonwebtoken");
+const { password } = require("../config/db.config");
+const PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+const EMAIL_REGEX =
+  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/;
+const signUpSchema = Joi.object({
+  id: Joi.string().required(),
+  password: Joi.string().pattern(PASSWORD_REGEX).required(),
+  confirmpassword: Joi.ref("password"),
+  email: Joi.string().email().pattern(EMAIL_REGEX).required(),
+});
+
 const signin = async (req, res) => {
   const userData = req.body;
   console.log(userData);
@@ -93,6 +106,7 @@ const signin = async (req, res) => {
 
 const signup = async (req, res) => {
   const userData = req.body;
+
   if (
     !userData.id ||
     !userData.email ||
@@ -100,11 +114,17 @@ const signup = async (req, res) => {
     !userData.confirmpassword
   ) {
     return res.sendStatus(400); //bad request
+  } else {
+    try {
+      const value = await signUpSchema.validateAsync(userData);
+    } catch (error) {
+      console.log("Hey");
+      return res.sendStatus(400);
+    }
   }
   await authModel
     .checkIDExists(userData.id)
     .then(async (result) => {
-      console.log("===================here");
       console.log(result);
       if (result.length > 0) {
         return res.status(200).json({
@@ -153,7 +173,7 @@ const signup = async (req, res) => {
 const logout = async (req, res) => {
   const cookies = req.cookies;
   await authModel
-    .logout(cookies,req,res)
+    .logout(cookies, req, res)
     .then((result) => {
       console.log("Logout successfully!");
       res.clearCookie("jwt").status(200).json({
