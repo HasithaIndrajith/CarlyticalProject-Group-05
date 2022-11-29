@@ -47,8 +47,6 @@ const updateRefreshTokenAndLoggedAt = (refreshToken, id) => {
 
 const signup = (userData) => {
   return new Promise((resolve, reject) => {
-    // console.log(userData);
-
     const { error, value } = signUpSchema.validate(userData);
     if (error) {
       return reject(error);
@@ -63,7 +61,6 @@ const signup = (userData) => {
         } else {
           if (result.length === 1) {
             const hash = bcrypt.hashSync(userData.password, 9);
-            // console.log(userData.id, userData.email, hash);
             db.query(
               "INSERT INTO USER (USERID,EMAIL,PASSWORD) VALUES ('" +
                 userData.id +
