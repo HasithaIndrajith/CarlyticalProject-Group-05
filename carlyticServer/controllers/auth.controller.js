@@ -175,16 +175,18 @@ const logout = async (req, res) => {
   await authModel
     .logout(cookies, req, res)
     .then((result) => {
-      console.log("Logout successfully!");
-      res.clearCookie("jwt").status(200).json({
-        message: "Successfully logged out",
-      });
+      console.log("Logout successfully!!!!");
+      // console.log(result);
+      // res.clearCookie("jwt").status(200).json({
+      //   message: "Successfully logged out",
+      // });
     })
     .catch((err) => {
       console.log("ERROR WHEN Logout: " + err);
-      res.status(500).json({
+      res.status(401).json({
         success: false,
         err,
+        message: "No Cookie Found",
       });
     });
 };
