@@ -15,11 +15,10 @@ const Header = () => {
     setIsLogoutModalOpen(!isLogoutModalOpen);
   };
   const handleLogout = async (e) => {
-    await userServices.handleLogout().then((res) => {
-      toggleLogoutModal();
-      localStorage.removeItem("AccessToken");
-      navigate("/");
-    });
+    await userServices.handleLogout();
+    toggleLogoutModal();
+    localStorage.removeItem("AccessToken");
+    navigate("/");
   };
 
   return (

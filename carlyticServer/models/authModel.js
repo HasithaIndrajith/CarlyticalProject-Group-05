@@ -88,8 +88,9 @@ const signup = (userData) => {
 };
 
 const logout = async (cookies, req, res) => {
-  if (!cookies?.jwt) return res.sendStatus(204); //no content to send
+  if (!cookies?.jwt) throw "No Cookie Found"; //no content to send
   const refreshToken = cookies.jwt;
+  console.log("Refresh Token Exists " + cookies.jwt);
 
   // chech whether refreshZToken in the database
 
@@ -126,6 +127,7 @@ const checkTokenFromDatabase = (refreshToken) => {
 
 const updateRefreshToken = (refreshToken, role) => {
   return new Promise((resolve, reject) => {
+    console.log(refreshToken);
     db.query(
       "Update USER set refresh_token=? where refresh_token=?",
       [null, refreshToken],
