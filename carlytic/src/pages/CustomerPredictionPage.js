@@ -11,22 +11,37 @@ import DatePicker from "react-datepicker";
 import { useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from 'react-time-picker';
+import TextField from '@material-ui/core/TextField';
+import { duration } from '@material-ui/core'
 
 const CustomerPredictionPage = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [lastDate, setLastDate] = useState(new Date());
   const [balance, setBalance] = useState(0);
   const [daysPassed, setDaysPassed] = useState(-1);
-  const [startTime, setStartTime] = useState('00:00');
-  const [endTime, setEndTime] = useState('00:00');
+  const [customer, setCustomer] = useState({});
 
 
   const onSubmit = (data) => {
-    console.log(data);
-    console.log(lastDate);
-    console.log(balance);
-    console.log(daysPassed);
-    console.log(startTime);
+    customer.age = data.age;
+    customer.job = data.job;
+    customer.marital = data.marital;
+    customer.education = data.education;
+    customer.default = data.default;
+    customer.hhInsurance = data.hhInsurance;
+    customer.lastDate = lastDate;
+    customer.carLoan = data.carLoan;
+    customer.communication = data.communication;
+    customer.prevAttempts = data.prevAttempts;
+    customer.daysPassed = data.daysPassed;
+    customer.outcome = data.outcome;
+    customer.startTime = data.startTime;
+    customer.endTime = data.endTime;
+    
+    customer.duration = data.endTime - data.startTime;
+    console.log(customer.duration);
+    
+    console.log(customer);
   }
 
   return (
@@ -143,6 +158,7 @@ const CustomerPredictionPage = () => {
                           selected={lastDate}
                           value={new Date()}
                           onChange={date => setLastDate(date)}
+                          
                         />
                         {errors.lastDate && <p style={{ color: 'red' }}>Last Contact Date is required!</p>}
                       </Form.Group>
@@ -206,27 +222,7 @@ const CustomerPredictionPage = () => {
                       </Form.Group>
                     </div>
                     <div className='col-md-6'>
-                      <Form.Group>
-                        <Form.Label>No. of days passed</Form.Label>
-                        <MDBRange
-                    min='-1'
-                    max='365'
-                    id='daysPassed'
-                    value={daysPassed}
-                    onChange={(e) => {
-                      setDaysPassed(e.target.value);
-                    }}
-                  />
-                      </Form.Group>
-                    </div>
-                  </div>
-
-                  <br></br>
-
-
-                  <div className='row'>
-                    <div className='col-md-6'>
-                      <Form.Group>
+                    <Form.Group>
                         <Form.Label>No. of Previous Attempts</Form.Label>
                         <Form.Control type="number" name="prevAttempts" min={-1} placeholder="No. of prev. attempts" {...register("prevAttempts", {
                           required: true
@@ -234,13 +230,26 @@ const CustomerPredictionPage = () => {
                         />
                         {errors.prevAttempts && <p style={{ color: 'red' }}>No. of Previous Attempts is required!</p>}
                       </Form.Group>
+                      
                     </div>
-                    <div className='col-md-6'>
-                      <Form.Group>
+                  </div>
+
+                  <br></br>
+
+
+                  <div className='row'>
+                  <Form.Group>
                         <Form.Label>No. of days passed</Form.Label>
-                        
+                        <MDBRange
+                          min='-1'
+                          max='365'
+                          id='daysPassed'
+                          value={daysPassed}
+                          onChange={(e) => {
+                            setDaysPassed(e.target.value);
+                          }}
+                        />
                       </Form.Group>
-                    </div>
                   </div>
 
                   <br></br>
@@ -261,20 +270,36 @@ const CustomerPredictionPage = () => {
                   </div>
 
                   <br></br>
-                  
+
                   <div className='row'>
                     <div className='col-md-6'>
                       <Form.Group>
                         <Form.Label>Last Call Start Time</Form.Label>
-                        <TimePicker onChange={setStartTime} value={startTime} />
-                      </Form.Group>
+                        <br></br>
+                        <TextField
+                          type="time"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          {...register("startTime", { required: true })} onChange={(e) => { }}
+                        />
+                      </Form.Group>                    
+                      {errors.startTime && <p style={{ color: 'red' }}>Last call start time is required!</p>}
                     </div>
 
                     <div className='col-md-6'>
                       <Form.Group>
                         <Form.Label>Last Call End Time</Form.Label>
-                        <TimePicker onChange={setEndTime} value={endTime} />
-                      </Form.Group>
+                        <br></br>
+                        <TextField
+                          type="time"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          {...register("endTime", { required: true })} onChange={(e) => { }}
+                          />
+                        </Form.Group>                    
+                        {errors.endTime && <p style={{ color: 'red' }}>Last call end time is required!</p>}
                     </div>
                   </div>
 
