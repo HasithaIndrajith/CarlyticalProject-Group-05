@@ -57,7 +57,7 @@ const ManagerHome = () => {
                   <br></br>
 
                   <div className="text-center">
-                    <Button variant="primary" href="/home">
+                    <Button variant="primary" href="/predictcustomer">
                       Predict for Customer
                     </Button>
                   </div>
