@@ -48,6 +48,9 @@ function PredictCustomerSetPage() {
       })
       .then((value) => {
         console.log(value);
+      })
+      .catch((err) => {
+        console.log("Bad format");
       });
   };
 

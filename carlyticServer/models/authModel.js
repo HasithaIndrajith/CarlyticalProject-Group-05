@@ -16,7 +16,7 @@ const signUpSchema = Joi.object({
 const signin = (userData) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT * FROM member inner join user on user.userID=member.memberID where memberID=?",
+      "SELECT * FROM MEMBER INNER JOIN USER ON USER.USERID=MEMBER.MEMBERID WHERE MEMBERID=?",
       userData.id,
       (err, result) => {
         if (err) {
@@ -32,7 +32,7 @@ const signin = (userData) => {
 const updateRefreshTokenAndLoggedAt = (refreshToken, id) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "Update user set refresh_token=?, logged_at=? WHERE userID=?",
+      "UPDATE USER SET REFRESH_TOKEN=?, LOGGED_AT=? WHERE USERID=?",
       [refreshToken, new Date(), id],
       (err, result) => {
         if (err) {
@@ -46,6 +46,7 @@ const updateRefreshTokenAndLoggedAt = (refreshToken, id) => {
 };
 
 const signup = (userData) => {
+  console.log('hye')
   return new Promise((resolve, reject) => {
     const { error, value } = signUpSchema.validate(userData);
     if (error) {
@@ -112,7 +113,7 @@ const logout = async (cookies, req, res) => {
 const checkTokenFromDatabase = (refreshToken) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "Select userID from USER where refresh_token=?",
+      "SELECT USERID FROM USER WHERE REFRESH_TOKEN=?",
       [refreshToken],
       (err, result) => {
         if (err) {
@@ -129,7 +130,7 @@ const updateRefreshToken = (refreshToken, role) => {
   return new Promise((resolve, reject) => {
     console.log(refreshToken);
     db.query(
-      "Update USER set refresh_token=? where refresh_token=?",
+      "UPDATE USER SET REFRESH_TOKEN=? WHERE REFRESH_TOKEN=?",
       [null, refreshToken],
       (err, result) => {
         if (err) {

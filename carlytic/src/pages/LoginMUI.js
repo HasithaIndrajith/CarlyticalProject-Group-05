@@ -89,17 +89,17 @@ export default function SignInSide() {
           console.log(response);
           localStorage.setItem("AccessToken", response?.data?.accessToken);
           // console.log(response.data);
-          if (response.data.result.type === 1) {
+          if (response.data.result.TYPE === 1) {
             navigate("/managerhome", { replace: true });
-          } else if (response.data.result.type === 0) {
+          } else if (response.data.result.TYPE === 0) {
             navigate("/employeehome", { replace: true });
           }
         })
         .catch((err) => {
           console.log(err.response.data);
-          if (err.response.data.password === false) {
+          if (err.response.data.PASSWORD === false) {
             setErrorMessage("Wrong Password Provided !!!");
-          } else if (err.response.data.password === undefined) {
+          } else if (err.response.data.PASSWORD === undefined) {
             setErrorMessage("No User Found !!!");
           }
         });
