@@ -1,7 +1,6 @@
 import React from 'react'
+import axios from "axios"
 import { Card, Container, Button } from 'react-bootstrap'
-// import { Form } from 'react-router-dom'
-// import { Form } from 'semantic-ui-react';
 import Form from 'react-bootstrap/Form'
 import Footer from './Footer'
 import Header from './Header'
@@ -10,9 +9,7 @@ import { MDBRange } from 'mdb-react-ui-kit';
 import DatePicker from "react-datepicker";
 import { useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
-import TimePicker from 'react-time-picker';
 import TextField from '@material-ui/core/TextField';
-import { duration } from '@material-ui/core'
 
 const CustomerPredictionPage = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -24,20 +21,38 @@ const CustomerPredictionPage = () => {
 
 
   const onSubmit = (data) => {
-    customer.age = data.age;
-    customer.job = data.job;
-    customer.marital = data.marital;
-    customer.education = data.education;
-    customer.default = data.default;
-    customer.hhInsurance = data.hhInsurance;
-    customer.lastDate = lastDate;
-    customer.carLoan = data.carLoan;
-    customer.communication = data.communication;
-    customer.prevAttempts = data.prevAttempts;
-    customer.daysPassed = data.daysPassed;
-    customer.outcome = data.outcome;
-    customer.startTime = new Date(data.startTime);
-    console.log(customer);
+    axios({
+      method: "POST",
+      url: "http://localhost:5000/predictionOutput",
+    })
+      .then((response) => {
+        const res = response.data
+        setCustomer(({
+          age : data.age,
+          job : data.job,
+          marital : data.marital,
+          education : data.education,
+          default : data.default,
+          hhInsurance : data.hhInsurance,
+          lastDate : lastDate,
+          carLoan : data.carLoan,
+          communication : data.communication,
+          prevAttempts : data.prevAttempts,
+          daysPassed : data.daysPassed,
+          outcome : data.outcome,
+          startTime : new Date(data.startTime)
+        }))
+        console.log(customer);
+      }).catch((error) => {
+        if (error.response) {
+          console.log(error.response)
+          // console.log(error.response.status)
+          // console.log(error.response.headers)
+        }
+      })
+
+
+    // console.log(customer);
   }
 
   return (
@@ -291,8 +306,8 @@ const CustomerPredictionPage = () => {
                   </div>
 
                   <br></br>
-                  <div style = {{textAlign: 'center'}}>
-                  <Button type='submit'>Submit</Button>
+                  <div style={{ textAlign: 'center' }}>
+                    <Button type='submit'>Submit</Button>
                   </div>
                 </Form>
                 <br></br>
