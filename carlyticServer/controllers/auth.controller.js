@@ -25,7 +25,7 @@ const signin = async (req, res) => {
   try {
     var result;
     result = await authModel.signin(userData);
-    // console.log(result);
+    console.log(result);
   } catch (error) {
     console.log("ERROR WHILE GETTING USER BY MEMBERID : " + error);
     return res.status(500).json({ err: error });
@@ -33,14 +33,15 @@ const signin = async (req, res) => {
 
   if (result?.length > 0) {
     let role = 0;
-
-    if (result[0].type === 1) {
+    if (result[0].TYPE === 1) {
       role = 1;
-      // console.log("I am hereee");
+      console.log("I am hereee");
     }
 
-    bcrypt.compare(password, result[0].password, (err, response) => {
+    bcrypt.compare(password, result[0].PASSWORD, (err, response) => {
       if (err) {
+        console.log(err);
+
         res.status(401).json({ auth: false });
       }
 
@@ -48,9 +49,9 @@ const signin = async (req, res) => {
         const accessToken = jwt.sign(
           {
             userInfo: {
-              id: result[0].userID,
+              id: result[0].USERID,
               role: role, // 1 for manager
-              email: result[0].email,
+              email: result[0].EMAIL,
             },
           },
           process.env.ACCESS_TOKEN_SECRET,
@@ -61,7 +62,7 @@ const signin = async (req, res) => {
           {
             id,
             role: role, // 1 for manager
-            email: result[0].email,
+            email: result[0].EMAIL,
           },
           process.env.REFRESH_TOKEN_SECRET,
           {

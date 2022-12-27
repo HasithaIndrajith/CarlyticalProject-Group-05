@@ -1,6 +1,6 @@
 module.exports = {
-  host: "localhost",
-  user: "root",
-  password: "12345",
-  db: "carlytical",
+  host: "sql6.freesqldatabase.com",
+  user: "sql6586800",
+  password: "QDHSALvdyp",
+  db: "sql6586800",
 };

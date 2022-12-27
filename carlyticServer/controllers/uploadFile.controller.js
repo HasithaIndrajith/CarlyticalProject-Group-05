@@ -30,7 +30,16 @@ const predictcustomerset = (req, res) => {
       console.error("error:", error); // Print the error
       console.log("statusCode:", response && response.statusCode); // Print the response status code if a response was received
       console.log("body:", body); // Print the data received
-      res.send(body); //Display the response on the website
+      if (body == "True") {
+        return res.status(200).send({
+          success: true,
+          message: "success",
+        });
+      }
+      return res.status(400).send({
+        success: false,
+        message: "invalid request",
+      });
     });
   });
 };
