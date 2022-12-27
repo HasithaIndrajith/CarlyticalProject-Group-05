@@ -22,9 +22,6 @@ const predictcustomerset = (req, res) => {
         "Accept-Charset": "utf-8",
         "User-Agent": "my-reddit-client",
       },
-      // body: {
-      //   file: req.files.file,
-      // },
       form: {
         file: req.files.file,
       },
@@ -35,22 +32,26 @@ const predictcustomerset = (req, res) => {
       console.log("body:", body); // Print the data received
       res.send(body); //Display the response on the website
     });
-    // res.json({
-    //   fileName: file.name,
-    //   filePath: `/uploads/${file.name}`,
-    // });
   });
-
-  // const result = axios.post(
-  //   "http://localhost:5000/api/uploadfile/predictcustomerset",
-  //   file,
-  //   {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //   }
-  // );
-  // console.log(req);
 };
 
-module.exports = { predictcustomerset };
+const predictcustomer = (req, res) => {
+  console.log(req.body);
+  const options = {
+    url: "http://127.0.0.1:5000/api/uploadfile/predictcustomer",
+    headers: {
+      Accept: "application/json",
+      json: true,
+    },
+
+    data: req.body,
+  };
+  request.post(options, function (error, response, body) {
+    console.error("error:", error);
+    console.log("statusCode:", response && response.statusCode);
+    console.log("body:", body);
+    res.send(body);
+  });
+};
+
+module.exports = { predictcustomerset, predictcustomer };

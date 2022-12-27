@@ -37,8 +37,22 @@ const handleLogout = () => {
     },
   });
 };
+
+const handleCustomerPredict = (customer) => {
+  console.log("Inside Hadle Customer Predict");
+  return axios({
+    url: DNS + "/api/uploadfile/predictcustomer",
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    data: customer,
+  });
+};
 export default {
   handleLogin,
   handleSignUp,
   handleLogout,
+  handleCustomerPredict,
 };
