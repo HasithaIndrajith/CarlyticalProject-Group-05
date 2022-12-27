@@ -1,10 +1,10 @@
-import React from "react";
-import { Card, Container, Button } from "react-bootstrap";
-// import { Form } from 'react-router-dom'
-// import { Form } from 'semantic-ui-react';
-import Form from "react-bootstrap/Form";
-import Footer from "./Footer";
-import Header from "./Header";
+
+import React from 'react'
+import axios from "axios"
+import { Card, Container, Button } from 'react-bootstrap'
+import Form from 'react-bootstrap/Form'
+import Footer from './Footer'
+import Header from './Header'
 import { useForm } from "react-hook-form";
 import { MDBRange } from "mdb-react-ui-kit";
 import DatePicker from "react-datepicker";
@@ -25,6 +25,7 @@ const CustomerPredictionPage = () => {
   const [balance, setBalance] = useState(0);
   const [daysPassed, setDaysPassed] = useState(-1);
   const [customer, setCustomer] = useState({});
+  const [dateString, setDateString] = useState("");
 
   const onSubmit = async (data) => {
     customer.age = data.age;
