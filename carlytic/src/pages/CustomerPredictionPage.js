@@ -21,37 +21,44 @@ const CustomerPredictionPage = () => {
 
 
   const onSubmit = (data) => {
-    axios({
-      method: "POST",
-      url: "http://localhost:5000/predictionOutput",
+    // axios({
+    //   method: "POST",
+    //   url: "http://localhost:3001/predictionOutput",
+    // })
+    //   .then((response) => {
+    //     const res = response.data
+    //     setCustomer(({
+    //       age : data.age,
+    //       job : data.job,
+    //       marital : data.marital,
+    //       education : data.education,
+    //       default : data.default,
+    //       hhInsurance : data.hhInsurance,
+    //       lastDate : lastDate,
+    //       carLoan : data.carLoan,
+    //       communication : data.communication,
+    //       prevAttempts : data.prevAttempts,
+    //       daysPassed : data.daysPassed,
+    //       outcome : data.outcome,
+    //       startTime : new Date(data.startTime)
+    //     }))
+    //     console.log(customer);
+    //   }).catch((error) => {
+    //     if (error.response) {
+    //       console.log(error.response)
+    //       // console.log(error.response.status)
+    //       // console.log(error.response.headers)
+    //     }
+    //   })
+
+    axios
+    .post("http://localhost:5000/predictCustomerList", data, {
+     
+      
     })
-      .then((response) => {
-        const res = response.data
-        setCustomer(({
-          age : data.age,
-          job : data.job,
-          marital : data.marital,
-          education : data.education,
-          default : data.default,
-          hhInsurance : data.hhInsurance,
-          lastDate : lastDate,
-          carLoan : data.carLoan,
-          communication : data.communication,
-          prevAttempts : data.prevAttempts,
-          daysPassed : data.daysPassed,
-          outcome : data.outcome,
-          startTime : new Date(data.startTime)
-        }))
-        console.log(customer);
-      }).catch((error) => {
-        if (error.response) {
-          console.log(error.response)
-          // console.log(error.response.status)
-          // console.log(error.response.headers)
-        }
-      })
-
-
+    .then((value) => {
+      console.log(value);
+    });
     // console.log(customer);
   }
 
