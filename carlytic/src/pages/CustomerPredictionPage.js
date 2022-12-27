@@ -20,6 +20,7 @@ const CustomerPredictionPage = () => {
   const [balance, setBalance] = useState(0);
   const [daysPassed, setDaysPassed] = useState(-1);
   const [customer, setCustomer] = useState({});
+  const [dateString, setDateString] = useState("");
 
 
   const onSubmit = (data) => {
@@ -35,12 +36,7 @@ const CustomerPredictionPage = () => {
     customer.prevAttempts = data.prevAttempts;
     customer.daysPassed = data.daysPassed;
     customer.outcome = data.outcome;
-    customer.startTime = data.startTime;
-    customer.endTime = data.endTime;
-    
-    customer.duration = data.endTime - data.startTime;
-    console.log(customer.duration);
-    
+    customer.startTime = new Date(data.startTime);
     console.log(customer);
   }
 
@@ -158,7 +154,7 @@ const CustomerPredictionPage = () => {
                           selected={lastDate}
                           value={new Date()}
                           onChange={date => setLastDate(date)}
-                          
+
                         />
                         {errors.lastDate && <p style={{ color: 'red' }}>Last Contact Date is required!</p>}
                       </Form.Group>
@@ -222,7 +218,7 @@ const CustomerPredictionPage = () => {
                       </Form.Group>
                     </div>
                     <div className='col-md-6'>
-                    <Form.Group>
+                      <Form.Group>
                         <Form.Label>No. of Previous Attempts</Form.Label>
                         <Form.Control type="number" name="prevAttempts" min={-1} placeholder="No. of prev. attempts" {...register("prevAttempts", {
                           required: true
@@ -230,7 +226,7 @@ const CustomerPredictionPage = () => {
                         />
                         {errors.prevAttempts && <p style={{ color: 'red' }}>No. of Previous Attempts is required!</p>}
                       </Form.Group>
-                      
+
                     </div>
                   </div>
 
@@ -238,7 +234,8 @@ const CustomerPredictionPage = () => {
 
 
                   <div className='row'>
-                  <Form.Group>
+                    <div className='col-md-6'>
+                      <Form.Group>
                         <Form.Label>No. of days passed</Form.Label>
                         <MDBRange
                           min='-1'
@@ -250,6 +247,22 @@ const CustomerPredictionPage = () => {
                           }}
                         />
                       </Form.Group>
+                    </div>
+
+                    <div className='col-md-6'>
+                      <Form.Group>
+                        <Form.Label>Last Call Start Time</Form.Label>
+                        <br></br>
+                        <TextField
+                          type="time"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          {...register("startTime", { required: true })} onChange={(e) => { }}
+                        />
+                      </Form.Group>
+                      {errors.startTime && <p style={{ color: 'red' }}>Last call start time is required!</p>}
+                    </div>
                   </div>
 
                   <br></br>
@@ -272,39 +285,15 @@ const CustomerPredictionPage = () => {
                   <br></br>
 
                   <div className='row'>
-                    <div className='col-md-6'>
-                      <Form.Group>
-                        <Form.Label>Last Call Start Time</Form.Label>
-                        <br></br>
-                        <TextField
-                          type="time"
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          {...register("startTime", { required: true })} onChange={(e) => { }}
-                        />
-                      </Form.Group>                    
-                      {errors.startTime && <p style={{ color: 'red' }}>Last call start time is required!</p>}
-                    </div>
 
-                    <div className='col-md-6'>
-                      <Form.Group>
-                        <Form.Label>Last Call End Time</Form.Label>
-                        <br></br>
-                        <TextField
-                          type="time"
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          {...register("endTime", { required: true })} onChange={(e) => { }}
-                          />
-                        </Form.Group>                    
-                        {errors.endTime && <p style={{ color: 'red' }}>Last call end time is required!</p>}
-                    </div>
+
+
                   </div>
 
                   <br></br>
+                  <div style = {{textAlign: 'center'}}>
                   <Button type='submit'>Submit</Button>
+                  </div>
                 </Form>
                 <br></br>
 
