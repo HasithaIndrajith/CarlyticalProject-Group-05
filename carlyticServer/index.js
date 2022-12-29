@@ -18,10 +18,12 @@ app.use(express.urlencoded({ extended: true }));
 
 const authRouter = require("./routes/auth.routes");
 const uploadFileRouter = require("./routes/uploadFile.routes");
+const predictCustomerRouter = require("./routes/predictCustomer.routes");
 const PORT = 3001;
 
 app.use("/api/auth", authRouter);
 app.use("/api/uploadfile", uploadFileRouter);
+app.use("/api", predictCustomerRouter);
 
 dotenv.config();
 app.listen(PORT, (error) => {
