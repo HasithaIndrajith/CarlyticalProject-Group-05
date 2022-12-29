@@ -25,7 +25,7 @@ test("Testing signup", async () => {
 
   await new Promise((resolve, reject) => {
     db.query(
-      "INSERT INTO MEMBER(memberID,name,type) VALUES ('" +
+      "INSERT INTO MEMBER(MEMBERID,NAME,TYPE) VALUES ('" +
         userData.id +
         "','" +
         name +
@@ -58,7 +58,7 @@ test("Testing signup", async () => {
   await auth.signup(userData);
   const dbResult = await new Promise((resolve, reject) => {
     db.query(
-      "SELECT userID,email,password FROM USER WHERE USERID=?",
+      "SELECT USERID,EMAIL,PASSWORD FROM USER WHERE USERID=?",
       userData.id,
       (err, dbResult) => {
         if (err) {
@@ -102,7 +102,7 @@ test("checkID Exists", async () => {
 
   await new Promise((resolve, reject) => {
     db.query(
-      "INSERT INTO MEMBER(memberID,name,type) VALUES ('" +
+      "INSERT INTO MEMBER(MEMBERID,NAME,TYPE) VALUES ('" +
         i +
         "','" +
         name +

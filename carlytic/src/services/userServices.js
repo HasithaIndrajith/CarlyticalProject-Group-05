@@ -1,5 +1,5 @@
 import axios from "axios";
-const DNS = "http://localhost:3001";
+const DNS = "https://carlyticbackend-ws82.onrender.com";
 
 const handleLogin = (LoginFormValue) => {
   console.log("Inside Handle Login");

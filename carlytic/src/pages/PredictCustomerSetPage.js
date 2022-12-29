@@ -34,18 +34,22 @@ function PredictCustomerSetPage() {
     const data = new FormData();
     data.append("file", file);
     axios
-      .post("http://localhost:3001/api/uploadfile/predictcustomerset", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        onUploadProgress: (progressEvent) => {
-          setUploadPercentage(
-            parseInt(
-              Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            )
-          );
-        },
-      })
+      .post(
+        "https://carlyticbackend-ws82.onrender.com/api/uploadfile/predictcustomerset",
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (progressEvent) => {
+            setUploadPercentage(
+              parseInt(
+                Math.round((progressEvent.loaded * 100) / progressEvent.total)
+              )
+            );
+          },
+        }
+      )
       .then((value) => {
         console.log(value);
       })
