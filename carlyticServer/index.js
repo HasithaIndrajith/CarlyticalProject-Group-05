@@ -8,7 +8,7 @@ require("dotenv").config();
 const app = express();
 const dotenv = require("dotenv");
 var corsOptions = {
-  origin: "https://carlyticfront-end.onrender.com",
+  origin: ["https://carlyticfront-end.onrender.com", "http://localhost:3000"],
 };
 app.use(cookieparser());
 app.use(cors(corsOptions));

@@ -69,11 +69,21 @@ const CustomerPredictionPage = () => {
     setAge(62);
 console.log(age);
     axios
-      .post(
-        "https://carlyticbackend-ws82.onrender.com/api/predictcustomer",
-        age,
-        {}
-      )
+      .post("http://localhost:3001/api/predictcustomer", {
+        age: data.age,
+        job: data.job,
+        marital: data.marital,
+        education: data.education,
+        default: data.default,
+        hhInsurance: data.hhInsurance,
+        lastDate: lastDate,
+        carLoan: data.carLoan,
+        communication: data.communication,
+        prevAttempts: data.prevAttempts,
+        daysPassed: data.daysPassed,
+        outcome: data.outcome,
+        startTime: new Date(data.startTime),
+      })
       .then((value) => {
         console.log(value);
       });
