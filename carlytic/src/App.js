@@ -9,6 +9,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import PredictCustomerSetPage from "./pages/PredictCustomerSetPage";
 import SignInSide from "./pages/LoginMUI";
 import Dashboard from "./pages/Dashboard";
+import CustomerOutputPage from "./pages/customerOutputPage";
+import CustomerSetOutputPage from "./pages/customerSetOutputPage";
 const ROLES = {
   MANAGER: 1,
   EMPLOYEE: 0,
@@ -56,8 +58,25 @@ function App() {
             path="dashboard"
             element={
               <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE]}>
-                <Dashboard/>
+                <Dashboard />
               </RequireAuth>
+            }
+          />
+          <Route
+            path="customeroutput"
+            element={
+              <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE]}>
+                <CustomerOutputPage/>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="customersetoutput"
+            element={
+              <CustomerSetOutputPage/>
+              // <RequireAuth allowedRoles={[ROLES.MANAGER, ROLES.EMPLOYEE]}>
+              //   <CustomerSetOutputPage/>
+              // </RequireAuth>
             }
           />
         </Routes>
