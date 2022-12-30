@@ -10,6 +10,7 @@ function ProgressBarFunction(props) {
   return <ProgressBar now={now} label={`${now}%`} />;
 }
 
+
 function PredictCustomerSetPage() {
   const [file, setFile] = useState(null);
   const [uploadPercentage, setUploadPercentage] = useState(0);

@@ -12,7 +12,8 @@ const predictcustomer = (req, res) => {
   
       data: req.body,
     };
-    request.post(options, function (error, response, body) {
+    
+    request.get(options, function (error, response, body) {
       console.error("error:", error);
       console.log("statusCode:", response && response.statusCode);
       console.log("body:", body);
