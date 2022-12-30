@@ -68,7 +68,7 @@ const CustomerPredictionPage = () => {
     //     }
     //   })
 
-    setCustomer({
+    setCustomer(({
       age: data.age,
       job: data.job,
       marital: data.marital,
@@ -81,11 +81,10 @@ const CustomerPredictionPage = () => {
       prevAttempts: data.prevAttempts,
       daysPassed: data.daysPassed,
       outcome: data.outcome,
-      startTime: new Date(data.startTime),
-    });
+      startTime: new Date(data.startTime)
+    }));
     setAge(62);
-    console.log(age);
-
+    console.log(customer);
     axios
       .post("http://localhost:5000/api/predictcustomer", {
         age: data.age,
@@ -153,58 +152,54 @@ const CustomerPredictionPage = () => {
                         )}
                       </Form.Group>
                     </div>
-                    <div className="col-md-6">
-                      <Form.Group>
-                        <Form.Label>Job</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="job"
-                          placeholder="Job"
-                          {...register("job", {
-                            required: true,
-                          })}
-                        />
-                        {errors.age && (
-                          <p style={{ color: "red" }}>Job is required!</p>
-                        )}
-                      </Form.Group>
-                    </div>
+                    <div className='col-md-6'></div>
                   </div>
+
+                  <br></br>
+                  <Form.Group>
+                    <Form.Label>Job</Form.Label>
+                    <br></br>
+                    <div className='row'>
+                      <div className='col-md-6'>
+                        <input type="radio" name="job" value={0}  {...register("job", { required: true })} onChange={(e) => { }} /> admin
+                        <br></br>
+                        <input type="radio" name="job" value={1}  {...register("job", { required: true })} onChange={(e) => { }} /> blue-collar
+                        <br></br>
+                        <input type="radio" name="job" value={2}  {...register("job", { required: true })} onChange={(e) => { }} /> entrepreneur
+                        <br></br>
+                        <input type="radio" name="job" value={3}  {...register("job", { required: true })} onChange={(e) => { }} /> housemaid
+                        <br></br>
+                        <input type="radio" name="job" value={4}  {...register("job", { required: true })} onChange={(e) => { }} /> management
+                      </div>
+                      <div className='col-md-6'>
+                        <input type="radio" name="job" value={5} {...register("job", { required: true })} onChange={(e) => { }} /> retired
+                        <br></br>
+                        <input type="radio" name="job" value={6}  {...register("job", { required: true })} onChange={(e) => { }} /> self-employed
+                        <br></br>
+                        <input type="radio" name="job" value={7}  {...register("job", { required: true })} onChange={(e) => { }} /> services
+                        <br></br>
+                        <input type="radio" name="job" value={8}  {...register("job", { required: true })} onChange={(e) => { }} /> unemployed
+                        <br></br>
+                        <input type="radio" name="job" value={9}  {...register("job", { required: true })} onChange={(e) => { }} /> technician
+
+                      </div>
+                    </div>
+                    {errors.age && <p style={{ color: 'red' }}>Job is required!</p>}
+                  </Form.Group>
 
                   <br></br>
 
                   <div className="container-fluid row">
                     <Form.Label>Marital Status</Form.Label>
                     <br></br>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="marital"
-                        value="married"
-                        {...register("marital", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Married
+                    <div className='col-md-3'>
+                      <input type="radio" name="marital" value={1}  {...register("marital", { required: true })} onChange={(e) => { }} /> Married
                     </div>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="marital"
-                        value="divorced"
-                        {...register("marital", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Divorced
+                    <div className='col-md-3'>
+                      <input type="radio" name="marital" value={0} {...register("marital", { required: true })} onChange={(e) => { }} /> Divorced
                     </div>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="marital"
-                        value="single"
-                        {...register("marital", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Single
+                    <div className='col-md-3'>
+                      <input type="radio" name="marital" value={2} {...register("marital", { required: true })} onChange={(e) => { }} /> Single
                     </div>
                     {errors.marital && (
                       <p style={{ color: "red" }}>
@@ -218,35 +213,14 @@ const CustomerPredictionPage = () => {
                   <div className="container-fluid row">
                     <Form.Label>Educational Level</Form.Label>
                     <br></br>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="education"
-                        value="primary"
-                        {...register("education", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Primary
+                    <div className='col-md-3'>
+                      <input type="radio" name="education" value={0}  {...register("education", { required: true })} onChange={(e) => { }} /> Primary
                     </div>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="education"
-                        value="secondary"
-                        {...register("education", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Secondary
+                    <div className='col-md-3'>
+                      <input type="radio" name="education" value={1} {...register("education", { required: true })} onChange={(e) => { }} /> Secondary
                     </div>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="education"
-                        value="tertiary"
-                        {...register("education", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Tertiary
+                    <div className='col-md-3'>
+                      <input type="radio" name="education" value={2} {...register("education", { required: true })} onChange={(e) => { }} /> Tertiary
                     </div>
                     {errors.education && (
                       <p style={{ color: "red" }}>
@@ -376,35 +350,14 @@ const CustomerPredictionPage = () => {
                   <div className="container-fluid row">
                     <Form.Label>Communication Mode</Form.Label>
                     <br></br>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="communication"
-                        value="celluar"
-                        {...register("communication", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Cellular
+                    <div className='col-md-3'>
+                      <input type="radio" name="communication" value={2}  {...register("communication", { required: true })} onChange={(e) => { }} /> Cellular
                     </div>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="communication"
-                        value="telephone"
-                        {...register("communication", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Telephone
+                    <div className='col-md-3'>
+                      <input type="radio" name="communication" value={1} {...register("communication", { required: true })} onChange={(e) => { }} /> Telephone
                     </div>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="communication"
-                        value="other"
-                        {...register("communication", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Other
+                    <div className='col-md-3'>
+                      <input type="radio" name="communication" value={0} {...register("communication", { required: true })} onChange={(e) => { }} /> Other
                     </div>
                     {errors.communication && (
                       <p style={{ color: "red" }}>
@@ -511,35 +464,14 @@ const CustomerPredictionPage = () => {
                   <div className="container-fluid row">
                     <Form.Label>Outcome from previous campaign</Form.Label>
                     <br></br>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="outcome"
-                        value="success"
-                        {...register("outcome", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Success
+                    <div className='col-md-3'>
+                      <input type="radio" name="outcome" value={1}  {...register("outcome", { required: true })} onChange={(e) => { }} /> Success
                     </div>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="outcome"
-                        value="failure"
-                        {...register("outcome", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Failure
+                    <div className='col-md-3'>
+                      <input type="radio" name="outcome" value={2} {...register("outcome", { required: true })} onChange={(e) => { }} /> Failure
                     </div>
-                    <div className="col-md-3">
-                      <input
-                        type="radio"
-                        name="outcome"
-                        value="other"
-                        {...register("outcome", { required: true })}
-                        onChange={(e) => {}}
-                      />{" "}
-                      Other
+                    <div className='col-md-3'>
+                      <input type="radio" name="outcome" value={-1} {...register("outcome", { required: true })} onChange={(e) => { }} /> Other
                     </div>
                     {errors.outcome && (
                       <p style={{ color: "red" }}>

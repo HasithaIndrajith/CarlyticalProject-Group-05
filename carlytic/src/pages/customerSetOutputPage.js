@@ -48,7 +48,6 @@ const CustomerSetOutputPage = () => {
 
             </div>
             <br></br>
-            <Footer />
 
         </div>
 
